@@ -15,11 +15,6 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <style scoped>
 
-header {
- position: fixed;
- top: 0; 
-}
-
 .app {
   min-height: 100vh;
 }
