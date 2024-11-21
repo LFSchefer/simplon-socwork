@@ -9,6 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.auth0.jwt.algorithms.Algorithm;
+
 @Configuration
 public class SecurityConfig {
 	
@@ -17,6 +19,12 @@ public class SecurityConfig {
 	
 	@Value("${socwork.bcrypt.cost}")
 	private int cost;
+	
+	@Value("${socwork.jwt.secret}")
+	private String secret;
+	
+	@Value("${socwork.jwt.expire}")
+	private Integer expire;
 
 	@Bean
 	WebMvcConfigurer corsConfigurer() {
@@ -33,4 +41,11 @@ public class SecurityConfig {
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(BCryptVersion.$2B,cost);
 	}
+	
+	@Bean
+	JwtProvider jwtProvider() {
+		Algorithm algorithm = Algorithm.HMAC256(secret);
+		return new JwtProvider(algorithm, expire);
+	}
+
 }

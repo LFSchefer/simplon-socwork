@@ -18,12 +18,12 @@
                     body: JSON.stringify(this.inputs)
                 }
                 const response = await fetch("http://localhost:8080/accounts/sign-in",options);
-                if(response.ok) {
-                    const data = await response.json();
-                    console.log(data);
-                    alert(`${data}`);
+                if(response.status === 200) {
+                    alert(`Authenticated`);
+                } else if (response.status === 401) {
+                    alert(`Bad credencials`);
                 } else {
-                    console.error('Dev is a failure !')
+                    alert(`Oups ! Unexpected error`);
                 }
             }
         }

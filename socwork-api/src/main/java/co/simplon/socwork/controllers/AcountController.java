@@ -30,8 +30,8 @@ public class AcountController {
 	}
 	
 	@PostMapping("/sign-in")
-	public ResponseEntity<String> signIn(@RequestBody AccountSignIn inputs) {
-		return ResponseEntity.ok(service.signIn(inputs));
-
+	@ResponseStatus(code = HttpStatus.OK)
+	public Object signIn(@RequestBody AccountSignIn inputs) {
+		return service.signIn(inputs);
 	}
 }

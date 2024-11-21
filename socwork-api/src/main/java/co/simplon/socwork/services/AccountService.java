@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.simplon.socwork.config.JwtProvider;
 import co.simplon.socwork.dtos.AccountCreate;
 import co.simplon.socwork.dtos.AccountSignIn;
 import co.simplon.socwork.entities.Account;
@@ -19,10 +20,13 @@ public class AccountService {
 	private final AccountRepository repo;
 		
 	private final PasswordEncoder encoder;
+	
+	private final JwtProvider jwt;
 
-	public AccountService(AccountRepository repo, PasswordEncoder encoder) {
+	public AccountService(AccountRepository repo, PasswordEncoder encoder, JwtProvider jwt) {
 		this.repo = repo;
 		this.encoder = encoder;
+		this.jwt = jwt;
 	}
 
 	@Transactional
@@ -32,16 +36,14 @@ public class AccountService {
 	}
 
 	@Transactional
-	public String signIn(AccountSignIn inputs) {
+	public Object signIn(AccountSignIn inputs) {
 		Account account = repo.findByUserNameIgnoreCase(inputs.userName().trim())
-				.orElseThrow( () -> new BadCredentialsException(inputs.userName()));
-		boolean match = encoder.matches(inputs.password(), account.getPassword());	
+				.orElseThrow( () -> new BadCredentialsException("Bad Credentials: " + inputs.userName()));
+		boolean match = encoder.matches(inputs.password(), account.getPassword());
 		if (match) {
-			return String.format("Success sign in with account %s ", inputs.userName());
-		} else {
-			return String.format("Wrong password with account %s ", inputs.userName());
+			return jwt.create(account.getUserName());
 		}
+		throw new BadCredentialsException("Bad Credentials: " + inputs.userName());
 	}
 
-	
 }
