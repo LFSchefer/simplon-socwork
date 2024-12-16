@@ -12,17 +12,21 @@ public class JwtProvider {
 	private final Algorithm algorithm;
 	
 	private final Integer expire;
+	
+	private final String issuer;
 
-	public JwtProvider(Algorithm algorithm, Integer expire) {
+	public JwtProvider(Algorithm algorithm, Integer expire, String issuer) {
 		this.algorithm = algorithm;
 		this.expire = expire;
+		this.issuer = issuer;
 	}
 
 	public String create(String subject) {
 		Instant instant = Instant.now();
 		Builder builder = JWT.create()
 				.withIssuedAt(instant)
-				.withSubject(subject);
+				.withSubject(subject)
+				.withIssuer(issuer);
 		if (expire != null) {
 			builder.withExpiresAt(instant.plus(expire, ChronoUnit.MINUTES));
 		}

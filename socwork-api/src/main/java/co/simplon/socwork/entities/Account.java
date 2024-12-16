@@ -1,7 +1,13 @@
 package co.simplon.socwork.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,6 +19,13 @@ public class Account extends AbstractEntity {
 	
 	@Column(name = "password")
 	private String password;
+	
+	@ManyToMany
+	@JoinTable(
+			  name = "t_accounts_roles", 
+			  joinColumns = @JoinColumn(name = "account_id"), 
+			  inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<Role>();
 
 	public Account() {
 	}
@@ -33,9 +46,17 @@ public class Account extends AbstractEntity {
 		this.password = password;
 	}
 
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public String toString() {
-		return "Account [userName=" + userName + ", password=[PROTECTED]" + "]";
+		return "Account [userName=" + userName + ", password= PROTECTED " + ", roles=" + roles + "]";
 	}
 	
 	

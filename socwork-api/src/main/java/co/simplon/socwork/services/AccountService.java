@@ -10,21 +10,23 @@ import co.simplon.socwork.config.JwtProvider;
 import co.simplon.socwork.dtos.AccountCreate;
 import co.simplon.socwork.dtos.AccountSignIn;
 import co.simplon.socwork.entities.Account;
+import co.simplon.socwork.entities.Role;
 import co.simplon.socwork.mappers.AccountMapper;
 import co.simplon.socwork.repositories.AccountRepository;
+import co.simplon.socwork.repositories.RoleRepository;
 
 @Service
 @Transactional(readOnly = true)
 public class AccountService {
 	
 	private final AccountRepository repo;
-		
+	private final RoleRepository roleRepo;
 	private final PasswordEncoder encoder;
-	
 	private final JwtProvider jwt;
 
-	public AccountService(AccountRepository repo, PasswordEncoder encoder, JwtProvider jwt) {
+	public AccountService(AccountRepository repo, RoleRepository roleRepo, PasswordEncoder encoder, JwtProvider jwt) {
 		this.repo = repo;
+		this.roleRepo = roleRepo;
 		this.encoder = encoder;
 		this.jwt = jwt;
 	}
@@ -32,7 +34,8 @@ public class AccountService {
 	@Transactional
 	public void create(AccountCreate inputs) {
 		String hashPassword = encoder.encode(inputs.password());
-		repo.save(AccountMapper.toEntity(inputs, hashPassword));
+		Role defaultRole = roleRepo.getDefaultRole().orElseThrow( () -> new InternalError("No default role find"));
+		repo.save(AccountMapper.toEntity(inputs, hashPassword, defaultRole));
 	}
 
 	@Transactional

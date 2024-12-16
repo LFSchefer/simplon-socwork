@@ -19,6 +19,8 @@
                 }
                 const response = await fetch("http://localhost:8080/accounts/sign-in",options);
                 if(response.status === 200) {
+                    const data = await response.text();
+                    console.log(data)
                     alert(`Authenticated`);
                 } else if (response.status === 401) {
                     alert(`Bad credencials`);

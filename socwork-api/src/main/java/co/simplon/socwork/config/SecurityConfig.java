@@ -12,8 +12,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -35,6 +38,9 @@ public class SecurityConfig {
 	
 	@Value("${socwork.jwt.expire}")
 	private Integer expire;
+	
+	@Value("${socwork.jwt.issuer}")
+	private String issuer;
 
 	@Bean
 	WebMvcConfigurer corsConfigurer() {
@@ -57,7 +63,7 @@ public class SecurityConfig {
 	@Bean
 	JwtProvider jwtProvider() {
 		Algorithm algorithm = Algorithm.HMAC256(secret);
-		return new JwtProvider(algorithm, expire);
+		return new JwtProvider(algorithm, expire, issuer);
 	}
 	
 	// Ressource server config
@@ -68,6 +74,8 @@ public class SecurityConfig {
         "HMACSHA256");
     NimbusJwtDecoder decoder = NimbusJwtDecoder.withSecretKey(secretKey)
         .macAlgorithm(MacAlgorithm.HS256).build();
+    OAuth2TokenValidator<Jwt>  validator = JwtValidators.createDefaultWithIssuer(issuer);
+    decoder.setJwtValidator(validator);
     return decoder;
     }
 	
