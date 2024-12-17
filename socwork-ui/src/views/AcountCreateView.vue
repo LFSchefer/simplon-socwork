@@ -1,4 +1,6 @@
 <script>
+import axiosClient from '@/services/axiosClient';
+
     export default {
         data() {
             return {
@@ -10,15 +12,8 @@
         },
         methods: {
             async submit() {
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(this.inputs)
-                }
-                const response = await fetch("http://localhost:8080/accounts",options);
-                if(response.ok) {
+                const response = await axiosClient.post("/accounts", this.inputs)
+                if(response.status === 201) {
                     alert('Account crée')
                 } else {
                     console.error('Dev is a failure !')

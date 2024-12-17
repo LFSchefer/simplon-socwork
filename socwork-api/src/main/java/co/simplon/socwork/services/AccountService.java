@@ -44,7 +44,7 @@ public class AccountService {
 				.orElseThrow( () -> new BadCredentialsException("Bad Credentials: " + inputs.userName()));
 		boolean match = encoder.matches(inputs.password(), account.getPassword());
 		if (match) {
-			return jwt.create(account.getUserName());
+			return jwt.create(account.getUserName(), account.getRoles());
 		}
 		throw new BadCredentialsException("Bad Credentials: " + inputs.userName());
 	}

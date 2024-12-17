@@ -1,4 +1,6 @@
 <script>
+import axiosClient from '@/services/axiosClient';
+
     export default {
         data() {
             return {
@@ -10,17 +12,9 @@
         },
         methods: {
             async submit() {
-                const options = {
-                    method: 'POST',
-                    headers: {
-                        'content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(this.inputs)
-                }
-                const response = await fetch("http://localhost:8080/accounts/sign-in",options);
+                const response = await axiosClient.post("/accounts/sign-in", this.inputs)
                 if(response.status === 200) {
-                    const data = await response.text();
-                    console.log(data)
+                    sessionStorage.setItem("token", response.data);
                     alert(`Authenticated`);
                 } else if (response.status === 401) {
                     alert(`Bad credencials`);

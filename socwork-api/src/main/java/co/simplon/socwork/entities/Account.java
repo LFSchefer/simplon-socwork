@@ -58,6 +58,15 @@ public class Account extends AbstractEntity {
 	public String toString() {
 		return "Account [userName=" + userName + ", password= PROTECTED " + ", roles=" + roles + "]";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		return obj instanceof Account other 
+				&& this.userName.equals(other.userName); 
+	}
 	
 	
 }
