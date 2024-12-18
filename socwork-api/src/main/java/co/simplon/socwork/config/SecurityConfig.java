@@ -79,13 +79,17 @@ public class SecurityConfig {
     return decoder;
     }
 	
+	
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors(Customizer.withDefaults())
 			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(request -> 
-				request.requestMatchers(HttpMethod.POST,"/accounts/sign-in","/accounts").anonymous()
-					.anyRequest().authenticated())
+				request.requestMatchers(HttpMethod.POST,"/accounts/sign-in","/accounts").anonymous())
+			.authorizeHttpRequests(request -> 
+				request.requestMatchers(HttpMethod.GET, "/accounts/with-role").hasRole("Manager"))
+			.authorizeHttpRequests(request -> 
+			request.anyRequest().authenticated())
 			.oauth2ResourceServer(oauth -> 
 				oauth.jwt(Customizer.withDefaults()));
 //			.oauth2ResourceServer(oauth -> 

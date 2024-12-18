@@ -1,12 +1,14 @@
 package co.simplon.socwork.entities;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t_roles")
-public class Role extends AbstractEntity{
+public class Role extends AbstractEntity {
 
 	@Column(name = "role_name")
 	private String name;
@@ -40,9 +42,9 @@ public class Role extends AbstractEntity{
 				&& this.name.equals(other.name);
 				
 	}
-	
-	
-	
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(name);
+	}
 }

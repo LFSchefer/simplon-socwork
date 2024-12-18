@@ -13,9 +13,7 @@ import co.simplon.socwork.entities.Role;
 public class JwtProvider {
 	
 	private final Algorithm algorithm;
-	
 	private final Integer expire;
-	
 	private final String issuer;
 
 	public JwtProvider(Algorithm algorithm, Integer expire, String issuer) {
@@ -32,7 +30,7 @@ public class JwtProvider {
 				.withSubject(subject)
 				.withArrayClaim("roles", roles)
 				.withIssuer(issuer);
-		if (expire != null) {
+		if (expire > -1) {
 			builder.withExpiresAt(instant.plus(expire, ChronoUnit.MINUTES));
 		}
 		return builder.sign(algorithm);

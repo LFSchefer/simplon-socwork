@@ -1,6 +1,8 @@
 package co.simplon.socwork.entities;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -30,28 +32,37 @@ public class Account extends AbstractEntity {
 	public Account() {
 	}
 
-	public String getUserName() {
-		return userName;
+	public Account(String userName, String password) {
+		this.userName = userName;
+		this.password = password;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public String getUserName() {
+		return userName;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public Set<Role> getRoles() {
-		return roles;
+		return Collections.unmodifiableSet(roles);
 	}
-
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	
+	public void addRole(Role role) {
+		roles.add(role);
+	}
+	
+	public void addRoles(Set<Role> roles) {
+		roles.addAll(roles);
+	}
+	
+	public void clearRoles() {
+		roles.clear();
+	}
+	
+	public void removeRole(Role role) {
+		roles.remove(role);
 	}
 
 	@Override
@@ -67,6 +78,9 @@ public class Account extends AbstractEntity {
 		return obj instanceof Account other 
 				&& this.userName.equals(other.userName); 
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(userName);
+	}
 }

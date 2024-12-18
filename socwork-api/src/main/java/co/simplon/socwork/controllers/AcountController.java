@@ -35,9 +35,9 @@ public class AcountController {
 		return service.signIn(inputs);
 	}
 	
-	@GetMapping("/toto")
+	@GetMapping("/with-role")
 	@ResponseStatus(code = HttpStatus.OK)
-	public String toto() {
-		return "coucou";
+	public String withRole() {
+		return "with role";
 	}
 }
