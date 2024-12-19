@@ -1,8 +1,6 @@
 package co.simplon.socwork.config;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
+import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.auth0.jwt.algorithms.Algorithm;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 public class SecurityConfig {
@@ -87,7 +86,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(request -> 
 				request.requestMatchers(HttpMethod.POST,"/accounts/sign-in","/accounts").anonymous())
 			.authorizeHttpRequests(request -> 
-				request.requestMatchers(HttpMethod.GET, "/accounts/with-role").hasRole("Manager"))
+				request.requestMatchers(HttpMethod.GET, "/accounts/with-role").hasRole("MANAGER"))
 			.authorizeHttpRequests(request -> 
 			request.anyRequest().authenticated())
 			.oauth2ResourceServer(oauth -> 

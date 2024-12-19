@@ -1,6 +1,7 @@
 package co.simplon.socwork.services;
 
 
+import co.simplon.socwork.dtos.AuthInfo;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,18 +39,16 @@ public class AccountService {
 		repo.save(AccountMapper.toEntity(inputs, hashPassword, defaultRole));
 	}
 
-	@Transactional
-	public Object signIn(AccountSignIn inputs) {
+	public AuthInfo signIn(AccountSignIn inputs) {
 		Account account = repo.findByUserNameIgnoreCase(inputs.userName().trim())
 				.orElseThrow( () -> new BadCredentialsException("Bad Credentials: " + inputs.userName()));
 		boolean match = encoder.matches(inputs.password(), account.getPassword());
 		if (match) {
-			return jwt.create(account.getUserName(), account.getRoles());
+			return AccountMapper.toAuthInfo(jwt.create(account.getUserName(), account.getRoles()),account.getRoles());
 		}
 		throw new BadCredentialsException("Bad Credentials: " + inputs.userName());
 	}
 
-	@Transactional
 	public Account getAccount() {
 		return repo.findAll().getFirst();
 	}
