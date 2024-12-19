@@ -23,7 +23,7 @@ public class AccountService {
 	private final RoleRepository roleRepo;
 	private final PasswordEncoder encoder;
 	private final JwtProvider jwt;
-
+		
 	public AccountService(AccountRepository repo, RoleRepository roleRepo, PasswordEncoder encoder, JwtProvider jwt) {
 		this.repo = repo;
 		this.roleRepo = roleRepo;
@@ -47,6 +47,11 @@ public class AccountService {
 			return jwt.create(account.getUserName(), account.getRoles());
 		}
 		throw new BadCredentialsException("Bad Credentials: " + inputs.userName());
+	}
+
+	@Transactional
+	public Account getAccount() {
+		return repo.findAll().getFirst();
 	}
 
 }

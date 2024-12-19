@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.simplon.socwork.dtos.AccountCreate;
 import co.simplon.socwork.dtos.AccountSignIn;
+import co.simplon.socwork.entities.Account;
 import co.simplon.socwork.services.AccountService;
 
 @RestController
@@ -39,5 +40,11 @@ public class AcountController {
 	@ResponseStatus(code = HttpStatus.OK)
 	public String withRole() {
 		return "with role";
+	}
+	
+	@GetMapping("/exo")
+	@ResponseStatus(code = HttpStatus.OK)
+	public Account exo() {
+		return service.getAccount();
 	}
 }
