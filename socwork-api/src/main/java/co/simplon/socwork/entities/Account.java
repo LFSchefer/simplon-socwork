@@ -1,16 +1,11 @@
 package co.simplon.socwork.entities;
 
+import jakarta.persistence.*;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "t_accounts")
@@ -67,7 +62,7 @@ public class Account extends AbstractEntity {
 
 	@Override
 	public String toString() {
-		return "Account [userName=" + userName + ", password= PROTECTED " + ", roles=" + roles + "]";
+		return "Account [userName=" + userName + ", password= PROTECTED " + ", roles= LAZY_LOADED ]";
 	}
 
 	@Override

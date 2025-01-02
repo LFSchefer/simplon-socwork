@@ -1,10 +1,10 @@
 package co.simplon.socwork.entities;
 
-import java.util.Objects;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "t_roles")
@@ -15,17 +15,17 @@ public class Role extends AbstractEntity {
 	
 	@Column(name = "default")
 	private boolean defaultRole;
-	
-	public boolean isDefaultRole() {
-		return defaultRole;
-	}
-	
+
 	public Role() {
 		// ORM
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public boolean isDefaultRole() {
+		return defaultRole;
 	}
 
 	@Override

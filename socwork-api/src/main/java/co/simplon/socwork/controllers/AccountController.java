@@ -1,5 +1,6 @@
 package co.simplon.socwork.controllers;
 
+import co.simplon.socwork.dtos.AuthInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,11 +16,11 @@ import co.simplon.socwork.services.AccountService;
 
 @RestController
 @RequestMapping("/accounts")
-public class AcountController {
+public class AccountController {
 
 	private final AccountService service;
 	
-	public AcountController(AccountService service) {
+	public AccountController(AccountService service) {
 		this.service = service;
 	}
 
@@ -32,7 +33,7 @@ public class AcountController {
 	
 	@PostMapping("/sign-in")
 	@ResponseStatus(code = HttpStatus.OK)
-	public Object signIn(@RequestBody AccountSignIn inputs) {
+	public AuthInfo signIn(@RequestBody AccountSignIn inputs) {
 		return service.signIn(inputs);
 	}
 	
